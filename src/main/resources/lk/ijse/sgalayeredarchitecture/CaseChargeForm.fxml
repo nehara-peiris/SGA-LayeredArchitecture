@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="984.0" prefWidth="1592.0" style="-fx-background-color: #adedd7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sgalayeredarchitecture.controller.CaseChargeFormController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0c3831" height="842.0" layoutX="29.0" layoutY="128.0" stroke="BLACK" strokeType="INSIDE" width="1517.0" />
+      <Label layoutX="576.0" layoutY="48.0" text="Case Charge Detail">
+         <font>
+            <Font name="System Bold" size="41.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tblCaseCharge2" layoutX="56.0" layoutY="161.0" prefHeight="777.0" prefWidth="1064.0">
+        <columns>
+          <TableColumn fx:id="colCCPayId2" prefWidth="135.0" text="CCPay ID" />
+          <TableColumn fx:id="colCaseId2" prefWidth="138.0" text="Case ID" />
+            <TableColumn fx:id="colChargeId2" prefWidth="149.0" text="Charge Id" />
+            <TableColumn fx:id="colDate2" prefWidth="244.0" text="Date" />
+            <TableColumn fx:id="colAmount2" prefWidth="221.0" text="Amount" />
+            <TableColumn fx:id="colClientId2" prefWidth="176.0" text="Client ID" />
+        </columns>
+      </TableView>
+      <TableView fx:id="tblCaseCharge1" layoutX="1149.0" layoutY="161.0" prefHeight="777.0" prefWidth="355.0">
+        <columns>
+          <TableColumn fx:id="colCaseId1" prefWidth="134.0" text="Case ID" />
+            <TableColumn fx:id="colTotalPay1" prefWidth="220.0" text="Total Payment" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
