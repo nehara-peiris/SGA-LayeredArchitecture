@@ -1,5 +1,6 @@
 package lk.ijse.sgalayeredarchitecture.controller;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,10 +22,10 @@ import java.sql.SQLException;
 
 public class LoginFormController {
     public AnchorPane rootNode;
-    public AnchorPane leafNode;
     public TextField txtUserId;
     public TextField txtPassword;
     public CheckBox checkBoxPw;
+    public JFXButton btnLogin;
 
     @FXML
     void initialize() {
@@ -41,7 +42,7 @@ public class LoginFormController {
 
         txtPassword.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                btnLoginOnAction(null);
+                btnLogin.requestFocus();
             }
         });
     }
@@ -90,34 +91,49 @@ public class LoginFormController {
     }
 
     private void navigateToTheDashboard() {
-        try{
-            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("DashboardForm.fxml"));
-            Parent rootNode = loader.load();
-            Scene scene = new Scene(rootNode);
+        try {
+            Parent rootNode = FXMLLoader.load(this.getClass().getResource("/lk/ijse/sgalayeredarchitecture/DashboardForm.fxml"));
 
-            DashboardFormController controller = loader.getController();
-            controller.setUserDetail();
+            Scene scene = new Scene(rootNode);
 
             Stage stage = (Stage) this.rootNode.getScene().getWindow();
             stage.setScene(scene);
             stage.centerOnScreen();
             stage.setTitle("Dashboard Form");
-        }catch (Exception e){
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showErrorDialog("Failed to load the Dashboard Form", e);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            showErrorDialog("An unexpected error occurred", e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorDialog("An unexpected error occurred", e);
         }
+    }
+
+    private void showErrorDialog(String message, Exception e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(message);
+        alert.setContentText(e.getMessage());
+        alert.showAndWait();
     }
 
     @FXML
     void hypRegOnAction(ActionEvent event) throws IOException {
-        Parent rootNode = FXMLLoader.load(this.getClass().getResource("RegisterForm.fxml"));
+        try {
+            Parent rootNode = FXMLLoader.load(this.getClass().getResource("/lk/ijse/sgalayeredarchitecture/RegisterForm.fxml"));
 
-        Scene scene = new Scene(rootNode);
-        Stage stage = new Stage();
-        stage.setScene(scene);
+            Scene scene = new Scene(rootNode);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Registration Form");
+            stage.show();
 
-        stage.setTitle("Registration Form");
-
-        stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void chkPwOnAction(ActionEvent event) {

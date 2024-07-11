@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.sgalayeredarchitecture.bo.BOFactory;
 import lk.ijse.sgalayeredarchitecture.bo.custom.ClientBo;
 import lk.ijse.sgalayeredarchitecture.dto.ClientDTO;
+import lk.ijse.sgalayeredarchitecture.dto.LawyerDTO;
 import lk.ijse.sgalayeredarchitecture.entity.Client;
 import lk.ijse.sgalayeredarchitecture.view.tdm.ClientTm;
 
@@ -185,7 +186,7 @@ public class ClientFormController implements Initializable {
         colLawyerId.setCellValueFactory(new PropertyValueFactory<>("LawyerID"));
     }
 
-    private void loadAllClients() {
+    /*private void loadAllClients() {
         tblClient.getItems().clear();
         try {
             ArrayList<ClientDTO> allClients = clientBo.getAllClients();
@@ -198,7 +199,34 @@ public class ClientFormController implements Initializable {
         } catch (ClassNotFoundException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
+    }*/
+
+    private void loadAllClients() {
+        tblClient.getItems().clear();
+        try {
+            ArrayList<ClientDTO> allClients = clientBo.getAllClients();
+
+            if (allClients.isEmpty()) {
+                System.out.println("No clients found.");
+                return;
+            }
+
+            for (ClientDTO c : allClients) {
+                System.out.println("Client: " + c.getClientId() + ", " + c.getName() + ", " + c.getAddress() + ", " + c.getEmail() + ", " + c.getContact() + ", " + c.getLawyerId());
+                ClientTm clientTm = new ClientTm(c.getClientId(), c.getName(), c.getAddress(), c.getEmail(), c.getContact(), c.getLawyerId());
+                tblClient.getItems().add(clientTm);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
+
+
 
     @FXML
     void btnSaveOnAction (ActionEvent event)  {
@@ -234,22 +262,16 @@ public class ClientFormController implements Initializable {
 
         int contact = Integer.parseInt(contactNo);
 
-        Client client = new Client(clientId, name, address, email, contact, lawyerId);
-
         try{
-            boolean isSaved = clientBo.saveClient(client);
-            if (isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION, "Client saved successfully!").show();
-                sendEmailToClient();
-                clearFields();
-                loadAllClients();
-                txtClientId.requestFocus();
-            }
-        }catch(SQLException e){
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            clientBo.saveClient(new ClientDTO(clientId, name, address, email, contact, lawyerId));
+            tblClient.getItems().add(new ClientTm(clientId, name, address, email, contact, lawyerId));
+            clearFields();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to save the client " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     private void clearFields() {
@@ -312,35 +334,32 @@ public class ClientFormController implements Initializable {
 
         int contact = Integer.parseInt(contactNo);
 
-        Client client = new Client(clientId, name, address, email, contact, lawyerId);
-
-        try{
-            boolean isUpdated = clientBo.updateClient(client);
-            if (isUpdated){
-                new Alert(Alert.AlertType.CONFIRMATION, "Client updated successfully!").show();
-                clearFields();
-                loadAllClients();
-            }
-        }catch(Exception e){
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        try {
+            clientBo.updateClient(new ClientDTO(clientId, name, address, email, contact, lawyerId));
+            clearFields();
+            loadAllClients();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to update the client " + e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtClientId.getText();
-
+        String id = tblClient.getSelectionModel().getSelectedItem().getClientId();
         try {
-            boolean isDeleted = clientBo.deleteClient(id);
-            if(isDeleted) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Client deleted!").show();
-                loadAllClients();
-                txtClientId.requestFocus();
-            }
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
-    }
+            clientBo.deleteClient(id);
+
+            tblClient.getItems().remove(tblClient.getSelectionModel().getSelectedItem());
+            tblClient.getSelectionModel().clearSelection();
+            clearFields();
+
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to delete the Lawyer " + id).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }    }
 
     public void TableOnClick(MouseEvent mouseEvent) {
         ClientTm clientTm = tblClient.getSelectionModel().getSelectedItem();

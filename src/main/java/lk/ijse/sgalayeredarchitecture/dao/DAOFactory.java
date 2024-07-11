@@ -27,7 +27,7 @@ public class DAOFactory {
             case CHARGE:
                 return new ChargeDAOImpl();
             case COURT:
-                return new CasesDAOImpl();
+                return new CourtDAOImpl();
             case DEED:
                 return new DeedDAOImpl();
             case JUDGE:

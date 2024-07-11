@@ -24,7 +24,7 @@ public class ChargeDAOImpl implements ChargeDAO {
 
     @Override
     public boolean save(Charge dto) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO charge VALUES(?,?,?,?,?)", dto.getChargeId(), dto.getDescription(), dto.getAmount());
+        return SQLUtil.execute("INSERT INTO charge VALUES(?,?,?)", dto.getChargeId(), dto.getDescription(), dto.getAmount());
     }
 
     @Override

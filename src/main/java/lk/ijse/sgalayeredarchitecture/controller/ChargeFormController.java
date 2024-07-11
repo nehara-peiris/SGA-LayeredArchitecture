@@ -135,7 +135,7 @@ public class ChargeFormController implements Initializable {
             }
 
             tblCharge.setItems(obList);
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -143,7 +143,7 @@ public class ChargeFormController implements Initializable {
     }
 
     @FXML
-    void btnSaveOnAction (ActionEvent event) {
+    void btnSaveOnAction(ActionEvent event) {
         String chargeId = txtChargeId.getText();
         String description = txtDescription.getText();
         String crgAmount = txtAmount.getText();
@@ -174,7 +174,7 @@ public class ChargeFormController implements Initializable {
                 clearFields();
                 txtChargeId.requestFocus();
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -219,7 +219,7 @@ public class ChargeFormController implements Initializable {
                 clearFields();
                 txtChargeId.requestFocus();
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -232,7 +232,7 @@ public class ChargeFormController implements Initializable {
 
         try {
             boolean isDeleted = chargeBo.deleteCharge(id);
-            if(isDeleted) {
+            if (isDeleted) {
                 new Alert(Alert.AlertType.CONFIRMATION, "charge deleted!").show();
                 loadAllCharges();
                 clearFields();
@@ -247,16 +247,22 @@ public class ChargeFormController implements Initializable {
 
     @FXML
     void btnCasesOnAction(ActionEvent event) throws IOException {
-        AnchorPane caseCharge = FXMLLoader.load(this.getClass().getResource("/view/CaseChargeForm.fxml"));
-
-        rootNode.getChildren().add(caseCharge);
+        try {
+            AnchorPane caseCharge = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/CaseChargeForm.fxml"));
+            rootNode.getChildren().add(caseCharge);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void btnDeedsOnAction(ActionEvent event) throws IOException {
-        AnchorPane deedCharge = FXMLLoader.load(this.getClass().getResource("/view/DeedChargeForm.fxml"));
-
-        rootNode.getChildren().add(deedCharge);
+        try {
+            AnchorPane deedCharge = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/DeedChargeForm.fxml"));
+            rootNode.getChildren().add(deedCharge);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void TableOnClick(MouseEvent mouseEvent) {
@@ -267,14 +273,20 @@ public class ChargeFormController implements Initializable {
     }
 
     public void btnCalDeedChargeOnAction(ActionEvent event) throws IOException {
-        AnchorPane deedCharge = FXMLLoader.load(this.getClass().getResource("/view/CalculateDeedChargeForm.fxml"));
-
-        rootNode.getChildren().add(deedCharge);
+        try {
+            AnchorPane calDeedCharge = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/CalculateDeedChargeForm.fxml"));
+            rootNode.getChildren().add(calDeedCharge);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void btnCalCaseChargeOnAction(ActionEvent event) throws IOException {
-        AnchorPane deedCharge = FXMLLoader.load(this.getClass().getResource("/view/CalculateCaseChargeForm.fxml"));
-
-        rootNode.getChildren().add(deedCharge);
+        try {
+            AnchorPane calCaseCharge = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/CalculateCaseChargeForm.fxml"));
+            rootNode.getChildren().add(calCaseCharge);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

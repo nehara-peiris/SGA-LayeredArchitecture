@@ -215,7 +215,7 @@ public class SummonFormController implements Initializable {
             summonBo.saveSummon(new SummonDTO(summonId, description, defendant, lawyerId, date));
             tblSummon.getItems().add(new SummonTm(summonId, description, defendant, lawyerId, date));
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to save the customer " + e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, "Failed to save the summon " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -239,9 +239,10 @@ public class SummonFormController implements Initializable {
 
         try {
             summonBo.updateSummon(new SummonDTO(summonId, description, defendant, lawyerId, date));
-            tblSummon.getItems().add(new SummonTm(summonId, description, defendant, lawyerId, date));
+            clearFields();
+            loadAllSummons();
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to save the customer " + e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, "Failed to update the summon " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -256,9 +257,10 @@ public class SummonFormController implements Initializable {
             tblSummon.getItems().remove(tblSummon.getSelectionModel().getSelectedItem());
             tblSummon.getSelectionModel().clearSelection();
             clearFields();
+            loadAllSummons();
 
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to delete the customer " + id).show();
+            new Alert(Alert.AlertType.ERROR, "Failed to delete the summon " + id).show();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

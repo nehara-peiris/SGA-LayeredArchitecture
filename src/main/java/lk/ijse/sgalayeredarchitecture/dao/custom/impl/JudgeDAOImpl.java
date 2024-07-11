@@ -12,10 +12,10 @@ public class JudgeDAOImpl implements JudgeDAO {
     @Override
     public ArrayList<Judge> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Judge> allJudges = new ArrayList<>();
-        ResultSet rst = SQLUtil.execute("SELECT * FROM summon");
+        ResultSet rst = SQLUtil.execute("SELECT * FROM judge");
 
         while (rst.next()) {
-            Judge judge = new Judge(rst.getString("judgeId"), rst.getString("Name"), rst.getString("courtId"), rst.getInt("yrsOfExp"));
+            Judge judge = new Judge(rst.getString("judgeId"), rst.getString("name"), rst.getString("courtId"), rst.getInt("yrsOfExp"));
             allJudges.add(judge);
         }
         return allJudges;

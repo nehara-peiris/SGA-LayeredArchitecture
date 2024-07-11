@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public interface ClientBo extends SuperBO {
     ArrayList<ClientDTO> getAllClients() throws SQLException, ClassNotFoundException;
 
-    boolean saveClient(Client dto) throws SQLException, ClassNotFoundException;
+    boolean saveClient(ClientDTO dto) throws SQLException, ClassNotFoundException;
 
-    boolean updateClient(Client dto) throws SQLException, ClassNotFoundException;
+    boolean updateClient(ClientDTO dto) throws SQLException, ClassNotFoundException;
 
     boolean deleteClient(String id) throws SQLException, ClassNotFoundException;
 

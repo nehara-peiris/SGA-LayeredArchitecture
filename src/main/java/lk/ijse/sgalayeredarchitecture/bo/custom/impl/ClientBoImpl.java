@@ -24,11 +24,11 @@ public class ClientBoImpl implements ClientBo {
         return clientDTOS;
     }
 
-    public boolean saveClient(Client dto) throws SQLException, ClassNotFoundException {
+    public boolean saveClient(ClientDTO dto) throws SQLException, ClassNotFoundException {
         return clientDAO.save(new Client(dto.getClientId(), dto.getName(), dto.getAddress(), dto.getEmail(), dto.getContact(), dto.getLawyerId()));
     }
 
-    public boolean updateClient(Client dto) throws SQLException, ClassNotFoundException {
+    public boolean updateClient(ClientDTO dto) throws SQLException, ClassNotFoundException {
         return clientDAO.update(new Client(dto.getClientId(), dto.getName(), dto.getAddress(), dto.getEmail(), dto.getContact(), dto.getLawyerId()));
     }
 

@@ -16,9 +16,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.sgalayeredarchitecture.bo.BOFactory;
 import lk.ijse.sgalayeredarchitecture.bo.custom.JudgeBo;
+import lk.ijse.sgalayeredarchitecture.dto.DeedDTO;
 import lk.ijse.sgalayeredarchitecture.dto.JudgeDTO;
+import lk.ijse.sgalayeredarchitecture.view.tdm.DeedTm;
 import lk.ijse.sgalayeredarchitecture.view.tdm.JudgeTm;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JudgeFormController {
@@ -139,23 +143,16 @@ public class JudgeFormController {
     }
 
     private void loadAllJudges() {
-        ObservableList<JudgeTm> obList = FXCollections.observableArrayList();
-
+        tblJudge.getItems().clear();
         try{
-            List<JudgeDTO> judgeList = judgeBo.getAllJudges();
-            for (JudgeDTO judge : judgeList) {
-                JudgeTm tm = new JudgeTm(
-                        judge.getJudgeId(),
-                        judge.getName(),
-                        judge.getCourtId(),
-                        judge.getYrsOfExp()
-                );
+            ArrayList<JudgeDTO> allJudges = judgeBo.getAllJudges();
 
-                obList.add(tm);
+            for (JudgeDTO j : allJudges) {
+                tblJudge.getItems().add(new JudgeTm(j.getJudgeId(), j.getName(), j.getCourtId(), j.getYrsOfExp()));
             }
-
-            tblJudge.setItems(obList);
-        }catch (Exception e) {
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -186,17 +183,14 @@ public class JudgeFormController {
 
         int yrsOfExp = Integer.parseInt(yearsOfExp);
 
-        JudgeDTO judge = new JudgeDTO(judgeId, name, courtId, yrsOfExp);
-
         try{
-            boolean isSaved = judgeBo.saveJudge(judge);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "deed saved!").show();
-                clearFields();
-                loadAllJudges();
-                txtJudgeId.requestFocus();
-            }
-        }catch(Exception e){
+            judgeBo.saveJudge(new JudgeDTO(judgeId, name, courtId, yrsOfExp));
+            tblJudge.getItems().add(new JudgeTm(judgeId, name,courtId, yrsOfExp));
+            clearFields();
+            loadAllJudges();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -234,35 +228,33 @@ public class JudgeFormController {
 
         int yrsOfExp = Integer.parseInt(yearsOfExp);
 
-        JudgeDTO judge = new JudgeDTO(judgeId, name, courtId, yrsOfExp);
-
         try{
-            boolean isUpdated = judgeBo.updateJudge(judge);
-            if (isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Judge Updated!").show();
-                clearFields();
-                loadAllJudges();
-                txtJudgeId.requestFocus();
-            }
-        }catch(Exception e){
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            judgeBo.updateJudge(new JudgeDTO(judgeId, name, courtId, yrsOfExp));
+            clearFields();
+            loadAllJudges();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtJudgeId.getText();
-
+        String id = tblJudge.getSelectionModel().getSelectedItem().getJudgeId();
         try {
-            boolean isDeleted = judgeBo.deleteJudge(id);
-            if(isDeleted) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Judge deleted!").show();
-                clearFields();
-                txtJudgeId.requestFocus();
-            }
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            judgeBo.deleteJudge(id);
+
+            tblJudge.getItems().remove(tblJudge.getSelectionModel().getSelectedItem());
+            tblJudge.getSelectionModel().clearSelection();
+            clearFields();
+            loadAllJudges();
+
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to delete the Lawyer " + id).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

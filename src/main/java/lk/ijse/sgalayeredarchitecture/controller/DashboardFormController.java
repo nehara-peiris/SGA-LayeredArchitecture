@@ -147,78 +147,121 @@ public class DashboardFormController implements Initializable {
         }).start();
     }
 
-    @FXML
+    /*@FXML
     void btnClientsOnAction(ActionEvent event) throws IOException {
-        AnchorPane clientForm = FXMLLoader.load(this.getClass().getResource("/view/ClientForm.fxml"));
+        AnchorPane clientForm = FXMLLoader.load(this.getClass().getResource("ClientForm.fxml"));
 
         rootNode.getChildren().add(clientForm);
+    }*/
+
+    @FXML
+    void btnClientsOnAction(ActionEvent event) {
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/ClientForm.fxml"));
+            rootNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     void btnLawyersOnAction(ActionEvent event) throws IOException {
-        /*AnchorPane lawyerForm = FXMLLoader.load(this.getClass().getResource("/view/LawyerForm.fxml"));
-
-        rootNode.getChildren().add(lawyerForm);*/
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/LawyerForm.fxml"));
+            rootNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void btnDeedsOnAction(ActionEvent event) throws IOException {
-        AnchorPane deedForm = FXMLLoader.load(this.getClass().getResource("/view/DeedForm.fxml"));
-
-        rootNode.getChildren().add(deedForm);
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/DeedForm.fxml"));
+            rootNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void btnJudgesOnAction(ActionEvent event) throws IOException {
-        AnchorPane judgeForm = FXMLLoader.load(this.getClass().getResource("/view/JudgeForm.fxml"));
-
-        rootNode.getChildren().add(judgeForm);
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/JudgeForm.fxml"));
+            rootNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     void btnCasesOnAction(ActionEvent event) throws IOException {
-        AnchorPane casesForm = FXMLLoader.load(this.getClass().getResource("/view/CasesForm.fxml"));
-
-        rootNode.getChildren().add(casesForm);
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/CasesForm.fxml"));
+            rootNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     void btnCourtsOnAction(ActionEvent event) throws IOException {
-        AnchorPane courtForm = FXMLLoader.load(this.getClass().getResource("/view/CourtForm.fxml"));
+        try {
+            System.out.println("Loading FXML: " + getClass().getResource("/lk/ijse/sgalayeredarchitecture/CourtForm.fxml"));
 
-        rootNode.getChildren().add(courtForm);
+            AnchorPane courtForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/CourtForm.fxml"));
+            rootNode.getChildren().add(courtForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     void btnSummonsOnAction(ActionEvent event) throws IOException {
-        AnchorPane summonForm = FXMLLoader.load(this.getClass().getResource("/view/SummonForm.fxml"));
-
-        rootNode.getChildren().add(summonForm);
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/SummonForm.fxml"));
+            rootNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void btnChargesOnAction(ActionEvent event) throws IOException {
-        AnchorPane chargeForm = FXMLLoader.load(this.getClass().getResource("/view/ChargeForm.fxml"));
-
-        rootNode.getChildren().add(chargeForm);
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/ChargeForm.fxml"));
+            rootNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void btnSalaryOnAction(ActionEvent event) throws IOException {
-        AnchorPane salaryForm = FXMLLoader.load(this.getClass().getResource("/view/PaymentForm.fxml"));
-
-        rootNode.getChildren().add(salaryForm);
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/PaymentForm.fxml"));
+            rootNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void btnLogoutOnAction(ActionEvent event) throws IOException {
-        AnchorPane loginForm = FXMLLoader.load(this.getClass().getResource("/view/LoginForm.fxml"));
-
-        mainNode.getChildren().add(loginForm);
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/LoginForm.fxml"));
+            mainNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void btnDashboardOnAction(ActionEvent event) throws IOException {
-        AnchorPane dashboardForm = FXMLLoader.load(this.getClass().getResource("/view/DashboardForm.fxml"));
-
-        mainNode.getChildren().add(dashboardForm);
+        try {
+            AnchorPane clientForm = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/DashboardForm.fxml"));
+            mainNode.getChildren().add(clientForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void cmbReportsOnAction(ActionEvent event){}

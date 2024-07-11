@@ -17,7 +17,7 @@ public class CasesDAOImpl implements CasesDAO {
     @Override
     public ArrayList<Cases> getAll() throws SQLException, ClassNotFoundException {
         ArrayList<Cases> allCases = new ArrayList<>();
-        ResultSet rst = SQLUtil.execute("SELECT * FROM Cases");
+        ResultSet rst = SQLUtil.execute("SELECT * FROM cases");
 
         while (rst.next()) {
             Cases cases = new Cases(rst.getString("caseId"), rst.getString("description"), rst.getString("type"), rst.getDate("date"), rst.getString("clientId"));

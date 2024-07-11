@@ -17,9 +17,12 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.sgalayeredarchitecture.bo.BOFactory;
 import lk.ijse.sgalayeredarchitecture.bo.custom.CourtBo;
 import lk.ijse.sgalayeredarchitecture.dto.CourtDTO;
+import lk.ijse.sgalayeredarchitecture.dto.SummonDTO;
 import lk.ijse.sgalayeredarchitecture.view.tdm.CourtTm;
+import lk.ijse.sgalayeredarchitecture.view.tdm.SummonTm;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourtFormController {
@@ -99,24 +102,17 @@ public class CourtFormController {
     }
 
     private void loadAllCourts() {
-        ObservableList<CourtTm> obList = FXCollections.observableArrayList();
+        tblCourt.getItems().clear();
+        try {
+            ArrayList<CourtDTO> allCourts = courtBo.getAllCourts();
 
-        try{
-            List<CourtDTO> courtList = courtBo.getAllCourts();
-            for (CourtDTO court : courtList) {
-                CourtTm tm = new CourtTm(
-                        court.getCourtId(),
-                        court.getLocation()
-                );
-
-                obList.add(tm);
+            for (CourtDTO c : allCourts) {
+                tblCourt.getItems().add(new CourtTm(c.getCourtId(), c.getLocation()));
             }
-
-            tblCourt.setItems(obList);
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
@@ -137,20 +133,15 @@ public class CourtFormController {
             return;
         }
 
-        CourtDTO court = new CourtDTO(courtId, location);
-
-        try{
-            boolean isSaved = courtBo.saveCourt(court);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "court saved!").show();
-                clearFields();
-                loadAllCourts();
-                txtCourtId.requestFocus();
-            }
-        }catch (SQLException e){
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        try {
+            courtBo.saveCourt(new CourtDTO(courtId, location));
+            tblCourt.getItems().add(new CourtTm(courtId, location));
+            clearFields();
+            loadAllCourts();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to save the court " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -176,40 +167,32 @@ public class CourtFormController {
             return;
         }
 
-        CourtDTO court = new CourtDTO(courtId, location);
-
-        try{
-            boolean isUpdated = courtBo.updateCourt(court);
-            if (isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "court updated!").show();
-                clearFields();
-                loadAllCourts();
-                txtCourtId.requestFocus();
-            }
-        }catch (SQLException e){
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        try {
+            courtBo.updateCourt(new CourtDTO(courtId, location));
+            clearFields();
+            loadAllCourts();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to update the court " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtCourtId.getText();
-
+        String id = tblCourt.getSelectionModel().getSelectedItem().getCourtId();
         try {
-            boolean isDeleted = courtBo.deleteCourt(id);
-            if(isDeleted) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Court deleted!").show();
-                loadAllCourts();
-                clearFields();
-                txtCourtId.requestFocus();
-            }
+            courtBo.deleteCourt(id);
+
+            tblCourt.getItems().remove(tblCourt.getSelectionModel().getSelectedItem());
+            tblCourt.getSelectionModel().clearSelection();
+            clearFields();
+            loadAllCourts();
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, "Failed to delete the court " + id).show();
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 

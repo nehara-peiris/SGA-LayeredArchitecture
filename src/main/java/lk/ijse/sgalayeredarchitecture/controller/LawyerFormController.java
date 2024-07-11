@@ -82,7 +82,7 @@ public class LawyerFormController implements Initializable {
 
         setCellValueFactory();
         loadAllLawyers();
-        loadAssignedCases();
+        //loadAssignedCases();
         keyEventsHandling();
 
         Validations();
@@ -140,10 +140,7 @@ public class LawyerFormController implements Initializable {
                 }
             }
 
-
-
-
-            if (textField == txtEmail && !newValue.matches("^([A-z])([A-z0-9.]){1,}[@]([A-z0-9]){1,10}[.]([A-z]){2,5}$")) {
+            if (textField == txtEmail && !newValue.matches("^([A-z])([A-z0-9.]){1,}@([A-z0-9]){1,10}[.]([A-z]){2,5}$")) {
             }
 
             if (textField == txtYrsOfExp) {
@@ -218,24 +215,7 @@ public class LawyerFormController implements Initializable {
         }
     }
     private void loadAssignedCases() {
-        ObservableList<LawCaseTm> obList = FXCollections.observableArrayList();
 
-        try{
-            List<LawCaseDTO> lawCaseList = lawCaseBo.getAllLawCase();
-            for (LawCaseDTO lawCase : lawCaseList) {
-                LawCaseTm tm = new LawCaseTm(
-                        lawCase.getLawyerId(),
-                        lawCase.getCaseId(),
-                        lawCase.getDate()
-                );
-                obList.add(tm);
-            }
-            tblAssignedWork.setItems(obList);
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @FXML
@@ -273,21 +253,16 @@ public class LawyerFormController implements Initializable {
         int yrsOfExp = Integer.parseInt(yearsOfExp);
         int contact = Integer.parseInt(contactNo);
 
-        LawyerDTO lawyer = new LawyerDTO(lawyerId, name, yrsOfExp, address, email, contact);
 
         try {
-            boolean isSaved = lawyerBo.saveLawyer(lawyer);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Lawyer saved!").show();
-                loadAllLawyers();
-                clearFields();
-                loadAssignedCases();
-                txtLawyerId.requestFocus();
-            }
+            lawyerBo.saveLawyer(new LawyerDTO(lawyerId, name, yrsOfExp, address, email, contact));
+            tblLawyer.getItems().add(new LawyerTm(lawyerId, name, yrsOfExp, address, email, contact));
+            clearFields();
+            loadAllLawyers();
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, "Failed to save the lawyer " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -367,36 +342,33 @@ public class LawyerFormController implements Initializable {
         int yrsOfExp = Integer.parseInt(yearsOfExp);
         int contact = Integer.parseInt(contactNo);
 
-        LawyerDTO lawyer = new LawyerDTO(lawyerId, name, yrsOfExp, address, email, contact);
 
-        try{
-            boolean isUpdated = lawyerBo.updateLawyer(lawyer);
-            if (isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Lawyer updated!").show();
-                loadAllLawyers();
-                loadAssignedCases();
-                clearFields();
-                txtLawyerId.requestFocus();
-            }
-        }catch(Exception e){
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        try {
+            lawyerBo.updateLawyer(new LawyerDTO(lawyerId, name, yrsOfExp, address, email, contact));
+            clearFields();
+            loadAllLawyers();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to update the lawyer " + e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtLawyerId.getText();
-
+        String id = tblLawyer.getSelectionModel().getSelectedItem().getLawyerId();
         try {
-            boolean isDeleted = lawyerBo.deleteLawyer(id);
-            if(isDeleted) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Lawyer deleted!").show();
-                loadAllLawyers();
-                clearFields();
-                loadAssignedCases();
-            }
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            lawyerBo.deleteLawyer(id);
+
+            tblLawyer.getItems().remove(tblLawyer.getSelectionModel().getSelectedItem());
+            tblLawyer.getSelectionModel().clearSelection();
+            clearFields();
+            loadAllLawyers();
+
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to delete the Lawyer " + id).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

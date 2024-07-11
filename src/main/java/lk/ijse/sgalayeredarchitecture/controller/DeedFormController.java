@@ -1,8 +1,6 @@
 package lk.ijse.sgalayeredarchitecture.controller;
 
 import com.jfoenix.controls.JFXButton;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,7 +25,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class DeedFormController implements Initializable {
@@ -235,25 +233,14 @@ public class DeedFormController implements Initializable {
     }
 
     private void loadAllDeeds() {
-        ObservableList<DeedTm> obList = FXCollections.observableArrayList();
-
+        tblDeed.getItems().clear();
         try{
-            List<DeedDTO> deedList = deedBo.getAllDeeds();
-            for (DeedDTO deed : deedList) {
-                DeedTm tm = new DeedTm(
-                        deed.getDeedId(),
-                        deed.getDescription(),
-                        deed.getType(),
-                        deed.getDate(),
-                        deed.getLawyerId(),
-                        deed.getClientId()
-                );
+            ArrayList<DeedDTO> allDeeds = deedBo.getAllDeeds();
 
-                obList.add(tm);
+            for (DeedDTO d : allDeeds) {
+                tblDeed.getItems().add(new DeedTm(d.getDeedId(), d.getDescription(), d.getType(), d.getDate(), d.getLawyerId(), d.getClientId()));
             }
-
-            tblDeed.setItems(obList);
-        } catch (SQLException e) {
+        }catch (SQLException e){
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -294,19 +281,13 @@ public class DeedFormController implements Initializable {
 
         Date date = Date.valueOf(dateOfDeed);
 
-        DeedDTO deed = new DeedDTO(deedId, description, type, date, lawyerId, clientId);
-
         try{
-            boolean isSaved = deedBo.saveDeed(deed);
-            if (isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION, "Deed saved successfully!").show();
-                clearFields();
-                setDate();
-                loadAllDeeds();
-                txtDeedId.requestFocus();
-            }
-        }catch(SQLException e){
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            deedBo.saveDeed(new DeedDTO(deedId, description, type, date, lawyerId, clientId));
+            tblDeed.getItems().add(new DeedTm(deedId, description, type, date, lawyerId, clientId));
+            clearFields();
+            loadAllDeeds();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -355,41 +336,33 @@ public class DeedFormController implements Initializable {
 
         Date date = Date.valueOf(dateOfDeed);
 
-        DeedDTO deed = new DeedDTO(deedId, description, type, date, lawyerId, clientId);
-
-        try{
-            boolean isUpdated = deedBo.updateDeed(deed);
-            if (isUpdated){
-                new Alert(Alert.AlertType.CONFIRMATION, "Deed updated successfully!").show();
-                loadAllDeeds();
-                clearFields();
-                setDate();
-                txtDeedId.requestFocus();
-            }
-        }catch(SQLException e){
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        try {
+            deedBo.updateDeed(new DeedDTO(deedId, description, type, date, lawyerId, clientId));
+            clearFields();
+            loadAllDeeds();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
+
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtDeedId.getText();
-
+        String id = tblDeed.getSelectionModel().getSelectedItem().getDeedId();
         try {
-            boolean isDeleted = deedBo.deleteDeed(id);
-            if(isDeleted) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Deed deleted!").show();
-                loadAllDeeds();
-                clearFields();
-                setDate();
-                txtDeedId.requestFocus();
-            }
+            deedBo.deleteDeed(id);
+
+            tblDeed.getItems().remove(tblDeed.getSelectionModel().getSelectedItem());
+            tblDeed.getSelectionModel().clearSelection();
+            clearFields();
+            loadAllDeeds();
+
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, "Failed to delete the deed " + id).show();
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
