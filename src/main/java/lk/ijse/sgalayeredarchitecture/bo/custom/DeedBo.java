@@ -19,4 +19,5 @@ public interface DeedBo extends SuperBO {
 
     Map<String, Integer> getAllDeedToChart() throws SQLException, ClassNotFoundException;
 
+    ArrayList<String> getAllDeedIds() throws SQLException, ClassNotFoundException;
 }

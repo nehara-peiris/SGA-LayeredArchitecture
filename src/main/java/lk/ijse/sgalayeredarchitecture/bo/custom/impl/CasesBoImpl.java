@@ -46,4 +46,9 @@ public class CasesBoImpl implements CasesBo {
     public Map<String, Integer> getAllCasesToChart() throws SQLException, ClassNotFoundException {
         return casesDAO.getAllToChart();
     }
+
+    @Override
+    public ArrayList<String> getAllCaseIds() throws SQLException, ClassNotFoundException {
+        return casesDAO.getAllIds();
+    }
 }

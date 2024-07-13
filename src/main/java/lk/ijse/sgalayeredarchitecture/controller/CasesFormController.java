@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,6 +27,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class CasesFormController implements Initializable {
@@ -133,13 +135,15 @@ public class CasesFormController implements Initializable {
             populateBarChart();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void populateBarChart() throws SQLException {
-        /*chartCase.getData().clear();
+    private void populateBarChart() throws SQLException, ClassNotFoundException {
+        chartCase.getData().clear();
 
-        Map<String, Integer> caseTypeCounts = CasesBo.getAllToChart();
+        Map<String, Integer> caseTypeCounts = casesBo.getAllCasesToChart();
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
         caseTypeCounts.forEach((type, count) -> {
@@ -152,7 +156,7 @@ public class CasesFormController implements Initializable {
             });
         });
 
-        chartCase.getData().add(series);*/
+        chartCase.getData().add(series);
     }
 
     private void addTextChangeListener(TextField textField) {
@@ -268,6 +272,8 @@ public class CasesFormController implements Initializable {
         try {
             casesBo.saveCase(new CaseDTO(caseId, description, type, date, clientId));
             tblCase.getItems().add(new CasesTm(caseId, description, date, type, clientId));
+            setCasesBarchart();
+            clearFields();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to save the case " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
@@ -320,7 +326,8 @@ public class CasesFormController implements Initializable {
 
         try {
             casesBo.updateCase(new CaseDTO(caseId, description, type, date, clientId));
-            tblCase.getItems().add(new CasesTm(caseId, description, date, type, clientId));
+            setCasesBarchart();
+            clearFields();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to update the case " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
@@ -336,6 +343,7 @@ public class CasesFormController implements Initializable {
 
             tblCase.getItems().remove(tblCase.getSelectionModel().getSelectedItem());
             tblCase.getSelectionModel().clearSelection();
+            setCasesBarchart();
             clearFields();
 
         } catch (SQLException e) {

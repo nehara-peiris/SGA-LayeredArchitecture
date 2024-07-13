@@ -12,7 +12,7 @@ public class DAOFactory {
     }
 
     public enum DAOTypes {
-        CLIENT, LAWYER, CASES, CHARGE, COURT, DEED, JUDGE, SUMMON, PAYMENT
+        CLIENT, LAWYER, CASES, CHARGE, COURT, DEED, JUDGE, SUMMON, PAYMENT, CASECHARGE, DEEDCHARGE
     }
 
     public SuperDAO getDAO(DAOTypes daoTypes){
@@ -36,6 +36,10 @@ public class DAOFactory {
                 return new SummonDAOImpl();
             case PAYMENT:
                 return new PaymentDAOImpl();
+            case CASECHARGE:
+                return new CaseChargeDAOImpl();
+            case DEEDCHARGE:
+                return new DeedChargeDAOImpl();
             default:
                 return null;
 

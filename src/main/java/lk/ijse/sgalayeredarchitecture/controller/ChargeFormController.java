@@ -272,21 +272,13 @@ public class ChargeFormController implements Initializable {
         txtAmount.setText(String.valueOf(chargeTm.getAmount()));
     }
 
-    public void btnCalDeedChargeOnAction(ActionEvent event) throws IOException {
+    public void btnCalChargeOnAction(ActionEvent event) throws IOException {
         try {
-            AnchorPane calDeedCharge = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/CalculateDeedChargeForm.fxml"));
+            AnchorPane calDeedCharge = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/CalculateChargesForm.fxml"));
             rootNode.getChildren().add(calDeedCharge);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void btnCalCaseChargeOnAction(ActionEvent event) throws IOException {
-        try {
-            AnchorPane calCaseCharge = FXMLLoader.load(getClass().getResource("/lk/ijse/sgalayeredarchitecture/CalculateCaseChargeForm.fxml"));
-            rootNode.getChildren().add(calCaseCharge);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

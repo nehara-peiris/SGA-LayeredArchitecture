@@ -23,7 +23,7 @@
       <Label layoutX="56.0" layoutY="508.0" text="Address" textFill="WHITE" />
       <Label layoutX="56.0" layoutY="620.0" text="Email" textFill="WHITE" />
       <Label layoutX="56.0" layoutY="730.0" text="Contact" textFill="WHITE" />
-      <TableView fx:id="tblLawyer" layoutX="520.0" layoutY="175.0" onMouseClicked="#TableOnClick" prefHeight="345.0" prefWidth="1005.0">
+      <TableView fx:id="tblLawyer" layoutX="520.0" layoutY="175.0" onMouseClicked="#TableOnClick" prefHeight="754.0" prefWidth="1005.0">
         <columns>
             <TableColumn fx:id="colLawyerID" prefWidth="130.0" text="Lawyer ID" />
           <TableColumn fx:id="colName" prefWidth="163.0" text="Name" />
@@ -42,18 +42,6 @@
       <JFXButton buttonType="RAISED" layoutX="402.0" layoutY="889.0" onAction="#btnDeleteOnAction" prefHeight="35.0" prefWidth="87.0" ripplerFill="#e13a0c" style="-fx-background-color: #94d6ca;" text="Delete" />
       <JFXButton buttonType="RAISED" layoutX="195.0" layoutY="889.0" onAction="#btnUpdateOnAction" prefHeight="35.0" prefWidth="115.0" ripplerFill="#60c641" style="-fx-background-color: #1c7850; -fx-background-radius: 10;" text="Update" textFill="WHITE" />
       <JFXButton fx:id="btnSave" buttonType="RAISED" layoutX="56.0" layoutY="889.0" onAction="#btnSaveOnAction" prefHeight="35.0" prefWidth="115.0" ripplerFill="#45668c" style="-fx-background-color: #1c7850; -fx-background-radius: 10;" text="Save" textFill="WHITE" />
-      <Label layoutX="520.0" layoutY="564.0" prefHeight="42.0" prefWidth="195.0" text="Assigned Cases" textFill="WHITE">
-         <font>
-            <Font name="System Bold Italic" size="19.0" />
-         </font>
-      </Label>
-      <TableView fx:id="tblAssignedWork" layoutX="524.0" layoutY="626.0" prefHeight="314.0" prefWidth="1005.0" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="524.0" AnchorPane.rightAnchor="63.0" AnchorPane.topAnchor="626.0">
-        <columns>
-          <TableColumn fx:id="colLawyerId" prefWidth="274.0" text="LawyerID" />
-          <TableColumn fx:id="colCaseId" prefWidth="398.0" text="CaseId" />
-            <TableColumn fx:id="colDate" prefWidth="332.0" text="Date" />
-        </columns>
-      </TableView>
       <Label layoutX="520.0" layoutY="118.0" prefHeight="42.0" prefWidth="195.0" text="Laywer Details" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="19.0" />

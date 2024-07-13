@@ -1,5 +1,10 @@
 package lk.ijse.sgalayeredarchitecture.controller;
 
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
+
 import com.jfoenix.controls.JFXComboBox;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -9,8 +14,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.sgalayeredarchitecture.bo.BOFactory;
+import lk.ijse.sgalayeredarchitecture.bo.custom.CasesBo;
+import lk.ijse.sgalayeredarchitecture.bo.custom.DeedBo;
+import lk.ijse.sgalayeredarchitecture.db.DbConnection;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +28,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.Map;
 
 
 public class DashboardFormController implements Initializable {
@@ -44,6 +55,10 @@ public class DashboardFormController implements Initializable {
     private NumberAxis axisNoOfDeeds;
     public Label lblDate;
     public Label lblTime;
+
+    CasesBo casesBo = (CasesBo) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CASES);
+
+    DeedBo deedBo = (DeedBo) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.DEED);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -77,12 +92,14 @@ public class DashboardFormController implements Initializable {
             populateCaseBarChart();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
-    private void populateCaseBarChart() throws SQLException {
-        /*chartCase.getData().clear();
+    private void populateCaseBarChart() throws SQLException, ClassNotFoundException {
+        chartCase.getData().clear();
 
-        Map<String, Integer> caseTypeCounts = CasesRepo.getAllToChart();
+        Map<String, Integer> caseTypeCounts = casesBo.getAllCasesToChart();
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
         caseTypeCounts.forEach((type, count) -> {
@@ -95,7 +112,7 @@ public class DashboardFormController implements Initializable {
             });
         });
 
-        chartCase.getData().add(series);*/
+        chartCase.getData().add(series);
     }
 
     private void setDeedBarchart() {
@@ -106,12 +123,14 @@ public class DashboardFormController implements Initializable {
             populateDeedBarChart();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
-    private void populateDeedBarChart() throws SQLException {
-        /*chartDeeds.getData().clear();
+    private void populateDeedBarChart() throws SQLException, ClassNotFoundException {
+        chartDeeds.getData().clear();
 
-        Map<String, Integer> deedTypeCounts = DeedRepo.getAllToChart();
+        Map<String, Integer> deedTypeCounts = deedBo.getAllDeedToChart();
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
         deedTypeCounts.forEach((type, count) -> {
@@ -124,7 +143,7 @@ public class DashboardFormController implements Initializable {
             });
         });
 
-        chartDeeds.getData().add(series);*/
+        chartDeeds.getData().add(series);
     }
 
     private void setDate() {
@@ -147,12 +166,6 @@ public class DashboardFormController implements Initializable {
         }).start();
     }
 
-    /*@FXML
-    void btnClientsOnAction(ActionEvent event) throws IOException {
-        AnchorPane clientForm = FXMLLoader.load(this.getClass().getResource("ClientForm.fxml"));
-
-        rootNode.getChildren().add(clientForm);
-    }*/
 
     @FXML
     void btnClientsOnAction(ActionEvent event) {
@@ -264,13 +277,11 @@ public class DashboardFormController implements Initializable {
         }
     }
 
-    public void cmbReportsOnAction(ActionEvent event){}
-
-    /*public void cmbReportsOnAction(ActionEvent event) throws JRException, SQLException, ClassNotFoundException {
+    public void cmbReportsOnAction(ActionEvent event) throws JRException, SQLException, ClassNotFoundException {
         String selectedItem = (String) cmbReports.getSelectionModel().getSelectedItem();
 
         if ("Assigned Work".equals(selectedItem)){
-            JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/reports/AssignedWorkDetails.jrxml");
+            JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/lk/ijse/sgalayeredarchitecture/reports/AssignedWorkDetails.jrxml");
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DbConnection.getInstance().getConnection());
@@ -278,11 +289,11 @@ public class DashboardFormController implements Initializable {
         }
 
         if ("Salary Details".equals(selectedItem)) {
-            JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/reports/SalaryDetail.jrxml");
+            JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/lk/ijse/sgalayeredarchitecture/reports/SalaryDetail.jrxml");
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DbConnection.getInstance().getConnection());
             JasperViewer.viewReport(jasperPrint, false);
         }
-    }*/
+    }
 }

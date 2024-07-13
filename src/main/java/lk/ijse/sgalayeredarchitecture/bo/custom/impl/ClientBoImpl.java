@@ -8,6 +8,7 @@ import lk.ijse.sgalayeredarchitecture.entity.Client;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClientBoImpl implements ClientBo {
 
@@ -42,5 +43,10 @@ public class ClientBoImpl implements ClientBo {
 
     public String getClientName(String cid) throws SQLException, ClassNotFoundException {
         return clientDAO.getName(cid);
+    }
+
+    @Override
+    public ArrayList<String> getAllClientIds() throws SQLException, ClassNotFoundException {
+        return (ArrayList<String>) clientDAO.getAllIds();
     }
 }

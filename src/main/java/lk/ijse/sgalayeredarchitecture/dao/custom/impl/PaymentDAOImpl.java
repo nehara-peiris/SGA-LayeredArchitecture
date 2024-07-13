@@ -39,6 +39,10 @@ public class PaymentDAOImpl implements PaymentDAO {
 
     @Override
     public String getCurrentId() throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("SELECT payId FROM payment ORDER BY payId DESC LIMIT 1");
+        ResultSet rst = SQLUtil.execute("SELECT payId FROM payment ORDER BY payId DESC LIMIT 1");
+        if (rst.next()) {
+            return rst.getString("payId");
+        }
+        return null;
     }
 }

@@ -44,4 +44,9 @@ public class DeedBoImpl implements DeedBo {
     public Map<String, Integer> getAllDeedToChart() throws SQLException, ClassNotFoundException {
         return deedDAO.getAllToChart();
     }
+
+    @Override
+    public ArrayList<String> getAllDeedIds() throws SQLException, ClassNotFoundException {
+        return deedDAO.getAllIds();
+    }
 }

@@ -45,4 +45,9 @@ public class ChargeBoImpl implements ChargeBo {
     public ChargeDTO getChargesData(String chargeId) throws SQLException, ClassNotFoundException {
         return chargeDAO.getData(chargeId);
     }
+
+    @Override
+    public ChargeDTO searchByDesc(String desc) throws SQLException, ClassNotFoundException {
+        return chargeDAO.searchByDesc(desc);
+    }
 }

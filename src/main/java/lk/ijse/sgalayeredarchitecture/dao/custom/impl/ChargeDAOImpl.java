@@ -39,6 +39,20 @@ public class ChargeDAOImpl implements ChargeDAO {
 
     @Override
     public ChargeDTO getData(String chargeId) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("SELECT description, amount FROM charge WHERE chargeId = ?", chargeId);
+        //return SQLUtil.execute("SELECT description, amount FROM charge WHERE chargeId = ?", chargeId);
+
+        ResultSet rst = SQLUtil.execute("SELECT description, amount FROM charge WHERE chargeId = ?", chargeId);
+        if (rst.next()) {
+            String description = rst.getString("description");
+            double amount = rst.getDouble("amount");
+            return new ChargeDTO(chargeId, description, amount);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public ChargeDTO searchByDesc(String desc) throws SQLException, ClassNotFoundException {
+        return SQLUtil.execute("SELECT * FROM charge WHERE description = ?, desc");
     }
 }

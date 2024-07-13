@@ -19,4 +19,6 @@ public interface ClientBo extends SuperBO {
     Client searchClientById(String id) throws SQLException, ClassNotFoundException;
 
     String getClientName(String cid) throws SQLException, ClassNotFoundException;
+
+    ArrayList<String> getAllClientIds() throws SQLException, ClassNotFoundException;
 }

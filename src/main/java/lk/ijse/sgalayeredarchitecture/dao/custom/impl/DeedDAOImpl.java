@@ -58,4 +58,16 @@ public class DeedDAOImpl implements DeedDAO {
         }
         return deedTypeCounts;
     }
+
+    @Override
+    public ArrayList<String> getAllIds() throws SQLException, ClassNotFoundException {
+        ArrayList<String> allIds = new ArrayList<>();
+        ResultSet rst = SQLUtil.execute("SELECT deedId FROM deed");
+
+        while (rst.next()) {
+            String id = rst.getString("deedId");
+            allIds.add(id);
+        }
+        return allIds;
+    }
 }

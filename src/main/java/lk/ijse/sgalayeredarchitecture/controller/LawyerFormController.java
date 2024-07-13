@@ -23,7 +23,12 @@ import lk.ijse.sgalayeredarchitecture.dto.LawyerDTO;
 import lk.ijse.sgalayeredarchitecture.view.tdm.LawCaseTm;
 import lk.ijse.sgalayeredarchitecture.view.tdm.LawyerTm;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -60,15 +65,6 @@ public class LawyerFormController implements Initializable {
     private TableColumn<?, ?> colContact;
     @FXML
     private AnchorPane rootNode;
-    @FXML
-    private TableView<LawCaseTm> tblAssignedWork;
-    @FXML
-    private TableColumn<?, ?> colLawyerId;
-    @FXML
-    private  TableColumn<?, ?> colCaseId;
-    @FXML
-    private  TableColumn<?, ?> colDate;
-
     LawyerBo lawyerBo = (LawyerBo) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.LAWYER);
 
     static LawCaseBo lawCaseBo = (LawCaseBo) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.LAWCASE);
@@ -76,13 +72,8 @@ public class LawyerFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        colLawyerId.setCellValueFactory(new PropertyValueFactory<>("lawyerId"));
-        colCaseId.setCellValueFactory(new PropertyValueFactory<>("CaseId"));
-        colDate.setCellValueFactory(new PropertyValueFactory<>("Date"));
-
         setCellValueFactory();
         loadAllLawyers();
-        //loadAssignedCases();
         keyEventsHandling();
 
         Validations();
@@ -214,9 +205,6 @@ public class LawyerFormController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-    private void loadAssignedCases() {
-
-    }
 
     @FXML
     void btnSaveOnAction (ActionEvent event) {
@@ -263,38 +251,6 @@ public class LawyerFormController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Failed to save the lawyer " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void lawCaseSave(String caseId, String lawyerId, Date dateOfCase) {
-
-        Date date = dateOfCase;
-
-        LawCaseDTO lawCase = new LawCaseDTO(lawyerId, caseId, date);
-
-        try{
-            boolean isSaved = lawCaseBo.saveLawCase(lawCase);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "LawCase saved!").show();
-            }
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void lawCaseUpdate(String caseId, String lawyerId, Date dateOfCase) {
-
-        Date date = dateOfCase;
-
-        LawCaseDTO lawCase = new LawCaseDTO(lawyerId, caseId, date);
-
-        try{
-            boolean isUpdated = lawCaseBo.updateLawCase(lawCase);
-            if (isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "LawCase updated!").show();
-            }
-        }catch(Exception e){
-            throw new RuntimeException(e);
         }
     }
 
@@ -389,7 +345,7 @@ public class LawyerFormController implements Initializable {
     @FXML
     private void sendEmail() {
 
-       /* String toWhom = txtEmail.getText();
+       String toWhom = txtEmail.getText();
         new Thread(()->{
             try {
                 String subject = "Confidential: Detailed Report for Review and Legal Counsel";
@@ -406,6 +362,6 @@ public class LawyerFormController implements Initializable {
             } catch (IOException | URISyntaxException e) {
                 System.out.println("An error occurred : "+e.getLocalizedMessage());
             }
-        }).start();*/
+        }).start();
     }
 }

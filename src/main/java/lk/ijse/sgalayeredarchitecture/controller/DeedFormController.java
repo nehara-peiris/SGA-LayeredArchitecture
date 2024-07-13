@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,6 +27,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class DeedFormController implements Initializable {
@@ -205,9 +207,9 @@ public class DeedFormController implements Initializable {
     }
 
     private void populateBarChart() throws SQLException, ClassNotFoundException {
-        /*chartDeeds.getData().clear();
+        chartDeeds.getData().clear();
 
-        Map<String, Integer> deedTypeCounts = deedBo.getAllToChart();
+        Map<String, Integer> deedTypeCounts = deedBo.getAllDeedToChart();
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
         deedTypeCounts.forEach((type, count) -> {
@@ -220,7 +222,7 @@ public class DeedFormController implements Initializable {
             });
         });
 
-        chartDeeds.getData().add(series);*/
+        chartDeeds.getData().add(series);
     }
 
     private void setCellValueFactory() {
@@ -286,6 +288,7 @@ public class DeedFormController implements Initializable {
             tblDeed.getItems().add(new DeedTm(deedId, description, type, date, lawyerId, clientId));
             clearFields();
             loadAllDeeds();
+            setDate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -340,6 +343,7 @@ public class DeedFormController implements Initializable {
             deedBo.updateDeed(new DeedDTO(deedId, description, type, date, lawyerId, clientId));
             clearFields();
             loadAllDeeds();
+            setDate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
@@ -358,7 +362,7 @@ public class DeedFormController implements Initializable {
             tblDeed.getSelectionModel().clearSelection();
             clearFields();
             loadAllDeeds();
-
+            setDate();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to delete the deed " + id).show();
         } catch (ClassNotFoundException e) {

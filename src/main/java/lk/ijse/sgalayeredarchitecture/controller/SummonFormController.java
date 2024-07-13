@@ -214,6 +214,9 @@ public class SummonFormController implements Initializable {
         try {
             summonBo.saveSummon(new SummonDTO(summonId, description, defendant, lawyerId, date));
             tblSummon.getItems().add(new SummonTm(summonId, description, defendant, lawyerId, date));
+            loadAllSummons();
+            clearFields();
+            setDate();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to save the summon " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
@@ -241,6 +244,7 @@ public class SummonFormController implements Initializable {
             summonBo.updateSummon(new SummonDTO(summonId, description, defendant, lawyerId, date));
             clearFields();
             loadAllSummons();
+            setDate();
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to update the summon " + e.getMessage()).show();
         } catch (ClassNotFoundException e) {
@@ -258,6 +262,7 @@ public class SummonFormController implements Initializable {
             tblSummon.getSelectionModel().clearSelection();
             clearFields();
             loadAllSummons();
+            setDate();
 
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to delete the summon " + id).show();

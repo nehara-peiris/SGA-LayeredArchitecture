@@ -15,18 +15,12 @@
                 <Font name="System Bold" size="41.0" />
             </font>
         </Label>
-        <TableView fx:id="tblPayment" layoutX="57.0" layoutY="204.0" prefHeight="720.0" prefWidth="742.0">
+        <TableView fx:id="tblPayment" layoutX="74.0" layoutY="203.0" prefHeight="720.0" prefWidth="1449.0">
             <columns>
-                <TableColumn fx:id="colPayId2" prefWidth="129.0" text="Payment ID" />
-                <TableColumn fx:id="colLawyerId2" prefWidth="152.0" text="Lawyer ID" />
-                <TableColumn fx:id="colDate2" prefWidth="255.0" text="Date" />
-                <TableColumn fx:id="colAmount2" minWidth="0.0" prefWidth="205.0" text="Amount" />
-            </columns>
-        </TableView>
-        <TableView fx:id="tblSalary" layoutX="862.0" layoutY="204.0" prefHeight="720.0" prefWidth="656.0">
-            <columns>
-                <TableColumn fx:id="colLawyerId1" prefWidth="183.0" text="Lawyer ID" />
-                <TableColumn fx:id="colTotalSalary1" prefWidth="229.0" text="Total Salary" />
+                <TableColumn fx:id="colPayId2" prefWidth="233.0" text="Payment ID" />
+                <TableColumn fx:id="colLawyerId2" prefWidth="338.0" text="Lawyer ID" />
+                <TableColumn fx:id="colDate2" prefWidth="411.0" text="Date" />
+                <TableColumn fx:id="colAmount2" minWidth="0.0" prefWidth="464.0" text="Amount" />
             </columns>
         </TableView>
     </children>

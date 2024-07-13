@@ -20,7 +20,12 @@ import lk.ijse.sgalayeredarchitecture.dto.LawyerDTO;
 import lk.ijse.sgalayeredarchitecture.entity.Client;
 import lk.ijse.sgalayeredarchitecture.view.tdm.ClientTm;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -185,21 +190,6 @@ public class ClientFormController implements Initializable {
         colContact.setCellValueFactory(new PropertyValueFactory<>("Contact"));
         colLawyerId.setCellValueFactory(new PropertyValueFactory<>("LawyerID"));
     }
-
-    /*private void loadAllClients() {
-        tblClient.getItems().clear();
-        try {
-            ArrayList<ClientDTO> allClients = clientBo.getAllClients();
-
-            for (ClientDTO c : allClients) {
-                tblClient.getItems().add(new ClientTm(c.getClientId(), c.getName(), c.getAddress(), c.getEmail(), c.getContact(), c.getLawyerId()));
-            }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        } catch (ClassNotFoundException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
-    }*/
 
     private void loadAllClients() {
         tblClient.getItems().clear();
@@ -378,11 +368,11 @@ public class ClientFormController implements Initializable {
 
     @FXML
     private void sendEmail() {
-
+        sendEmailToClient();
     }
 
     private void sendEmailToClient() {
-        /*String toWhom = txtEmail.getText();
+        String toWhom = txtEmail.getText();
         new Thread(()->{
             try {
                 String subject = "Confidential: Detailed Report for Review and Legal Counsel";
@@ -398,6 +388,6 @@ public class ClientFormController implements Initializable {
             } catch (IOException | URISyntaxException e) {
                 System.out.println("An error occurred : "+e.getLocalizedMessage());
             }
-        }).start();*/
+        }).start();
     }
 }

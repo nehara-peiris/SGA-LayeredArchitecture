@@ -17,4 +17,6 @@ public interface CasesBo extends SuperBO {
    boolean deleteCase(String id) throws SQLException, ClassNotFoundException;
 
    Map<String, Integer> getAllCasesToChart() throws SQLException, ClassNotFoundException;
+
+    ArrayList<String> getAllCaseIds() throws SQLException, ClassNotFoundException;
 }

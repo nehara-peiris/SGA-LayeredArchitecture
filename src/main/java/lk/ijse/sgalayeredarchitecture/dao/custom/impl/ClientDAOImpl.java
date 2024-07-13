@@ -7,6 +7,7 @@ import lk.ijse.sgalayeredarchitecture.entity.Client;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClientDAOImpl implements ClientDAO {
 
@@ -48,6 +49,23 @@ public class ClientDAOImpl implements ClientDAO {
 
     @Override
     public String getName(String cid) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("SELECT name FROM client WHERE clientId = ?", cid);
+        //return SQLUtil.execute("SELECT name FROM client WHERE clientId = ?", cid);
+        ResultSet rst = SQLUtil.execute("SELECT name FROM client WHERE clientId = ?", cid);
+        if (rst.next()) {
+            return rst.getString("name");
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<String> getAllIds() throws SQLException, ClassNotFoundException {
+        List<String> allIds = new ArrayList<>();
+        ResultSet rst = SQLUtil.execute("SELECT clientId FROM client");
+
+        while (rst.next()) {
+            allIds.add(rst.getString("clientId"));
+        }
+        return allIds;
     }
 }

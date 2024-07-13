@@ -24,7 +24,6 @@ public class CasesDAOImpl implements CasesDAO {
             allCases.add(cases);
         }
         return allCases;
-
     }
 
     @Override
@@ -58,6 +57,18 @@ public class CasesDAOImpl implements CasesDAO {
             }
         }
         return caseTypeCounts;
+    }
+
+    @Override
+    public ArrayList<String> getAllIds() throws ClassNotFoundException, SQLException {
+        ArrayList<String> allIds = new ArrayList<>();
+        ResultSet rst = SQLUtil.execute("SELECT caseId FROM cases");
+
+        while (rst.next()) {
+            String id = rst.getString("caseId");
+            allIds.add(id);
+        }
+        return allIds;
     }
 
 }

@@ -12,7 +12,7 @@ public class BOFactory{
     }
 
     public enum BOTypes{
-        CLIENT, LAWYER, CASES, CHARGE, COURT, DEED, JUDGE, SUMMON, PAYMENT, LAWCASE, DEEDCHARGE
+        CLIENT, LAWYER, CASES, CHARGE, COURT, DEED, JUDGE, SUMMON, PAYMENT, LAWCASE, CASECHARGE, DEEDCHARGE, CALCASECHARGE, CALDEEDCHARGE
     }
 
     public SuperBO getBO(BOTypes boTypes){
@@ -39,6 +39,12 @@ public class BOFactory{
                 return new LawCaseBoImpl();
             case DEEDCHARGE:
                 return new DeedChargeBoImpl();
+            case CASECHARGE:
+                return new CaseChargeBoImpl();
+            case CALDEEDCHARGE:
+                return new CalDeedChargeBoImpl();
+            case CALCASECHARGE:
+                return new CalCaseChargeBoImpl();
             default:
                 return null;
         }

@@ -9,4 +9,6 @@ import java.sql.SQLException;
 public interface ChargeDAO extends CrudDao<Charge> {
     ChargeDTO getData(String chargeId) throws SQLException, ClassNotFoundException;
 
+    ChargeDTO searchByDesc(String desc) throws SQLException, ClassNotFoundException;
+
 }

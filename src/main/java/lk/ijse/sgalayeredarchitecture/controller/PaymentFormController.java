@@ -8,10 +8,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.sgalayeredarchitecture.bo.BOFactory;
+import lk.ijse.sgalayeredarchitecture.bo.custom.PaymentBo;
 import lk.ijse.sgalayeredarchitecture.dto.PaymentDTO;
-import lk.ijse.sgalayeredarchitecture.dto.SalaryDTO;
 import lk.ijse.sgalayeredarchitecture.view.tdm.PaymentTm;
-import lk.ijse.sgalayeredarchitecture.view.tdm.SalaryTm;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -31,18 +31,14 @@ public class PaymentFormController implements Initializable {
     private TableColumn<?, ?> colDate2;
     @FXML
     private TableColumn<?, ?> colAmount2;
-    @FXML
-    private TableView<SalaryTm>  tblSalary;
-    @FXML
-    private TableColumn<?, ?>  colLawyerId1;
-    @FXML
-    private TableColumn<?, ?>  colTotalSalary1;
+
+
+    PaymentBo paymentBo = (PaymentBo) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PAYMENT);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setCellValueFactory();
         loadAllPayment();
-        loadTotalSalary();
     }
 
     private void setCellValueFactory() {
@@ -50,16 +46,13 @@ public class PaymentFormController implements Initializable {
         colLawyerId2.setCellValueFactory(new PropertyValueFactory<>("lawyerId"));
         colDate2.setCellValueFactory(new PropertyValueFactory<>("date"));
         colAmount2.setCellValueFactory(new PropertyValueFactory<>("amount"));
-
-        colLawyerId1.setCellValueFactory(new PropertyValueFactory<>("lawyerId"));
-        colTotalSalary1.setCellValueFactory(new PropertyValueFactory<>("totalSalary"));
     }
 
     private void loadAllPayment() {
-        /*ObservableList<PaymentTm> obList = FXCollections.observableArrayList();
+        ObservableList<PaymentTm> obList = FXCollections.observableArrayList();
 
         try{
-            List<PaymentDTO> paymentList = PaymentRepo.getAll();
+            List<PaymentDTO> paymentList = paymentBo.getAllPayments();
             for (PaymentDTO payment : paymentList) {
                 PaymentTm tm = new PaymentTm(
                         payment.getPaymentId(),
@@ -72,25 +65,8 @@ public class PaymentFormController implements Initializable {
             tblPayment.setItems(obList);
         }catch (SQLException e){
             throw new RuntimeException(e);
-        }*/
-    }
-
-    private void loadTotalSalary() {
-        /*ObservableList<SalaryTm> obList = FXCollections.observableArrayList();
-
-        try{
-            List<SalaryDTO> salaryList = SalaryRepo.getAll();
-            for (SalaryDTO salary : salaryList) {
-                SalaryTm tm = new SalaryTm(
-                        salary.getLawyerId(),
-                        salary.getTotalSalary()
-                );
-                obList.add(tm);
-            }
-
-            tblSalary.setItems(obList);
-        }catch (SQLException e){
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
 }
